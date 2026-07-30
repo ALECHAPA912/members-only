@@ -1,0 +1,40 @@
+<div class="header">
+    <div class="title-container">
+        <h1>ALEJANDRO'S FRIENDS ONLY</h1>
+    </div>
+    <div class="new-post-container">
+        <%= button_to "New post", new_post_path , method: :get %>
+    </div>
+    <% if user_signed_in? %>
+        <div class="welcome-container">
+            <strong><p>Welcome <%= current_user.username %>!</p></strong>
+        </div>
+        <div class="logout-container">
+            <%= button_to "Log out", destroy_user_session_path, method: :delete  %>
+        </div>
+    <% else %>
+        <div class="login-container">
+            <%= button_to "Log in", new_user_session_path, method: :get %>
+        </div>
+        <div class="create-account-container">
+            <%= button_to "Create account", new_user_registration_path, method: :get %>
+        </div>
+    <% end %>
+</div>
+<h2 class="all-posts-subtitle">All members posts:</h2>
+<div class="all-posts-container">
+    <% if @posts.any? %>
+    <% @posts.reverse.each do |post| %>
+        <div class="post-container">
+            <h3 class="post-title"><%= post.title %></h3>
+            <p class="post-body"><%= post.body %></p>
+            <% if user_signed_in? %>
+                <p class="post-author">Author: <%= post.user.username %></p>
+            <% end %>
+        </div>
+    <% end %>
+    </div>
+    <% else %>
+        <h2>Nothing to see over here...</h2>
+    <% end %>
+</div>

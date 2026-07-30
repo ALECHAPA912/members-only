@@ -7,4 +7,88 @@
  * depending on specificity.
  *
  * Consider organizing styles into separate files for maintainability.
- */
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background-color: rgb(20, 20, 20);
+}
+
+body {
+    background-color: rgb(54, 54, 54);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: 2fr 1fr 12fr;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 5fr 1fr 1fr 1fr;
+    align-items: center;
+    border: 1px solid #333333;
+}
+
+.header div {
+    text-align: center;
+}
+
+
+h1,
+.welcome-container,
+.post-title {
+    color: #d1d1d1;
+}
+
+h1 {
+    font-size: 60px;
+}
+
+.post-title {
+    font-size: 30px;
+    text-decoration: underline;
+    padding-bottom: 5px;
+}
+
+.post-body {
+    font-size: 20px;
+    color: #b4b4b4;
+}
+
+.header button {
+    font-size: 20px;
+    width: 90%;
+    height: 40px;
+}
+
+.all-posts-container,
+.post-container {
+    border: 1px solid #3f3f3f;
+}
+
+.all-posts-container {
+  display: grid;
+  grid-template-rows: repeat(auto-fit, minmax(50px, 1fr));
+}
+
+.all-posts-subtitle {
+    font-size: 35px;
+    padding-left: 30px;
+}
+
+.post-container {
+    align-items: center;
+    justify-content: center;
+   padding-left: 30px;
+   padding-top: 10px;
+}
+
+.post-title {
+
+}
