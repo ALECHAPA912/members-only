@@ -1,41 +1,41 @@
 /*
- * This is a manifest file that'll be compiled into application.css.
+ * Members Only — Tema oscuro minimalista
+ * Ajustado a las clases/markup reales de las vistas de esta app
+ * (posts/index, posts/new, _post_form, devise/*).
  *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
-*/
+ * Con Propshaft los assets se sirven sin preprocesado, así que este
+ * único archivo cubre toda la interfaz.
+ */
 
 :root {
-  --bg-main: #0b0f19;
-  --bg-surface: #151b28;
-  --bg-surface-hover: #1c2436;
-  --bg-input: #0f1420;
+  --bg: #101012;
+  --surface: #17171a;
+  --surface-hover: #1c1c20;
+  --input-bg: #0c0c0e;
 
-  --border-color: #232d42;
+  --border: #27272a;
   --border-focus: #6366f1;
 
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
+  --text: #e7e7ea;
+  --text-muted: #9a9aa3;
+  --text-dim: #6b6b73;
 
   --accent: #6366f1;
   --accent-hover: #4f46e5;
-  --accent-glow: rgba(99, 102, 241, 0.25);
 
-  --badge-bg: rgba(99, 102, 241, 0.1);
-  --badge-border: rgba(99, 102, 241, 0.3);
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.08);
+  --success: #22c55e;
+  --success-bg: rgba(34, 197, 94, 0.08);
 
   --radius-sm: 6px;
-  --radius-md: 12px;
-  --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  --radius-md: 10px;
   --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* Base Body & Reset */
+/* ==========================================================================
+   0. RESET Y BASE
+   ========================================================================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -43,181 +43,230 @@
 }
 
 body {
-  background-color: var(--bg-main);
-  color: var(--text-main);
+  background-color: var(--bg);
+  color: var(--text);
   font-family: var(--font-sans);
+  font-size: 15px;
   line-height: 1.6;
   min-height: 100vh;
-  padding: 2.5rem 1rem;
-  max-width: 800px;
+  padding: 2.5rem 1.25rem 4rem;
+  max-width: 720px;
   margin: 0 auto;
 }
 
-/* ==========================================================================
-   1. CABECERA: Título a la izquierda, botones a la derecha
-   ========================================================================== */
-header, nav, .header, .nav {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-/* Título principal */
-h1 {
-  font-size: 1.85rem;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  color: var(--text-main);
-  margin: 0;
-}
-
-/* Subtítulo (se posiciona debajo ocupando el 100% del ancho) */
-header p, header h2, .subtitle, nav p {
-  flex-basis: 100%;
-  width: 100%;
-  font-size: 0.95rem;
-  color: var(--text-muted);
-  margin-top: 0.25rem;
-  margin-bottom: 0;
-}
-
-/* Contenedor de enlaces/botones en la cabecera */
-header div, nav div, header ul, nav ul {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+h1, h2, h3 {
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
 }
 
 /* ==========================================================================
-   2. BOTONES Y ENLACES DE NAVEGACIÓN
+   1. ENLACES Y BOTONES
    ========================================================================== */
 a {
   color: var(--accent);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: color 0.15s ease;
 }
-
 a:hover {
-  color: var(--accent-hover);
+  color: #fff;
 }
 
-/* Estilizado automático de links en el nav/header como botones */
-header a, nav a, .btn, input[type="submit"] {
+/* Rails genera <form class="button_to"> para cada button_to */
+.button_to {
+  display: inline-flex;
+}
+
+input[type="submit"],
+button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   background-color: var(--accent);
-  color: #ffffff !important;
+  color: #fff;
+  font-family: inherit;
   font-weight: 500;
   font-size: 0.875rem;
   padding: 0.55rem 1.1rem;
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
-  text-decoration: none !important;
-  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  transition: background-color 0.15s ease;
 }
-
-header a:hover, nav a:hover, .btn:hover, input[type="submit"]:hover {
+input[type="submit"]:hover,
+button:hover {
   background-color: var(--accent-hover);
-  box-shadow: 0 0 15px var(--accent-glow);
 }
-
-header a:active, nav a:active, .btn:active, input[type="submit"]:active {
+input[type="submit"]:active,
+button:active {
   transform: scale(0.98);
 }
 
 /* ==========================================================================
-   3. FEED DE POSTS (Publicación, Body y Autor)
+   2. CABECERA (posts#index) — .header, title/acciones
    ========================================================================== */
-/* Contenedor general de posts */
-.posts, .posts-container, main {
+.header {
   display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-/* Tarjeta individual de cada post */
-article, .post, .post-card {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-article:hover, .post:hover, .post-card:hover {
-  border-color: rgba(99, 102, 241, 0.4);
-  background-color: var(--bg-surface-hover);
-  box-shadow: var(--shadow);
-}
-
-/* Título de cada post */
-article h2, article h3, .post-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-main);
-  margin: 0;
-  line-height: 1.35;
-}
-
-/* Contenido / Cuerpos del texto (Body) */
-article p, .post-body, .post p {
-  color: var(--text-muted);
-  font-size: 0.975rem;
-  line-height: 1.6;
-  white-space: pre-line; /* Mantiene saltos de línea introducidos por el usuario */
-  margin: 0;
-}
-
-/* Autor y metadatos del post */
-article small, .post small, .post-author, .author {
-  display: inline-flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.5rem;
-  padding: 0.35rem 0.75rem;
-  background-color: var(--badge-bg);
-  border: 1px solid var(--badge-border);
-  border-radius: 20px;
-  color: var(--text-main);
-  font-size: 0.825rem;
-  font-weight: 500;
-  width: fit-content;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
 }
 
-article small::before, .post small::before, .post-author::before {
-  content: "✍️";
-  font-size: 0.75rem;
+.title-container {
+  flex: 1 1 100%;
+}
+
+.title-container h1 {
+  font-size: 1.6rem;
+}
+
+.new-post-container,
+.welcome-container,
+.logout-container,
+.login-container,
+.create-account-container {
+  display: flex;
+  align-items: center;
+}
+
+.welcome-container p {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 400;
+}
+
+.welcome-container strong {
+  font-weight: 400;
+}
+
+/* Botones secundarios dentro de la cabecera (logout, login, crear cuenta) */
+.logout-container input[type="submit"],
+.login-container input[type="submit"],
+.create-account-container input[type="submit"] {
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.logout-container input[type="submit"]:hover,
+.login-container input[type="submit"]:hover,
+.create-account-container input[type="submit"]:hover {
+  border-color: var(--text-dim);
+  color: var(--text);
+  background-color: var(--surface-hover);
 }
 
 /* ==========================================================================
-   4. FORMULARIOS E INPUTS
+   3. LISTADO DE POSTS
+   ========================================================================== */
+.all-posts-subtitle {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+}
+
+.all-posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Estado vacío ("Nothing to see over here...") */
+.all-posts-container > h2 {
+  color: var(--text-muted);
+  font-weight: 400;
+  font-size: 1rem;
+  padding: 2.5rem 0;
+  text-align: center;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+}
+
+.post-container {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.4rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.post-container:hover {
+  border-color: #35353a;
+  background-color: var(--surface-hover);
+}
+
+.post-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.post-body {
+  color: var(--text-muted);
+  font-size: 0.925rem;
+  white-space: pre-line;
+  margin-bottom: 0.75rem;
+}
+
+.post-author {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  border-top: 1px solid var(--border);
+  padding-top: 0.6rem;
+  width: 100%;
+}
+
+/* ==========================================================================
+   4. FORMULARIOS (nuevo post, devise: login/registro/etc.)
    ========================================================================== */
 form {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 1.75rem;
-  margin-bottom: 2rem;
-  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 480px;
+}
+
+/* posts/new.html.erb usa un <div> plano por campo dentro de _post_form */
+form > div,
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+/* Las vistas de devise envuelven label/input en <p> dentro de .field */
+.field p {
+  display: contents;
+}
+
+/* Caso "Remember me" del login: checkbox + etiqueta en la misma fila */
+.field:has(input[type="checkbox"]) {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.field:has(input[type="checkbox"]) input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.field:has(input[type="checkbox"]) label {
+  margin: 0;
 }
 
 label {
-  display: block;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-muted);
-  margin-bottom: 0.4rem;
-  margin-top: 1rem;
 }
 
 input[type="text"],
@@ -225,21 +274,22 @@ input[type="email"],
 input[type="password"],
 textarea {
   width: 100%;
-  background-color: var(--bg-input);
-  border: 1px solid var(--border-color);
+  background-color: var(--input-bg);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  color: var(--text-main);
-  padding: 0.75rem 0.9rem;
+  color: var(--text);
+  padding: 0.65rem 0.85rem;
   font-family: inherit;
-  font-size: 0.925rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  font-size: 0.9rem;
+  transition: border-color 0.15s ease;
 }
 
-input:focus,
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
 textarea:focus {
   outline: none;
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
 textarea {
@@ -247,25 +297,82 @@ textarea {
   resize: vertical;
 }
 
+input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
+.actions {
+  margin-top: 0.25rem;
+}
+
+/* Título dentro de new-post-container en posts/new.html.erb */
+.new-post-container h1 {
+  font-size: 1.3rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Enlaces bajo los formularios de devise (_links.html.erb) */
+form + p,
+p + p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
 /* ==========================================================================
-   5. MENSAGES FLASH (Notificaciones de Rails)
+   5. MENSAJES (errores de devise, flash)
    ========================================================================== */
+#error_explanation {
+  background-color: var(--danger-bg);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-sm);
+  padding: 0.9rem 1.1rem;
+}
+
+#error_explanation h2 {
+  font-size: 0.875rem;
+  color: var(--danger);
+  margin-bottom: 0.4rem;
+}
+
+#error_explanation ul {
+  list-style: none;
+  color: var(--danger);
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
 #notice, .notice, .flash-notice {
-  background-color: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.3);
-  color: #34d399;
+  background-color: var(--success-bg);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: var(--success);
   padding: 0.85rem 1.1rem;
   border-radius: var(--radius-sm);
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
 }
 
-#alert, .alert, .flash-alert, #error_explanation {
-  background-color: rgba(239, 68, 68, 0.1);
+#alert, .alert, .flash-alert {
+  background-color: var(--danger-bg);
   border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #f87171;
+  color: var(--danger);
   padding: 0.85rem 1.1rem;
   border-radius: var(--radius-sm);
   margin-bottom: 1.5rem;
   font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   6. TÍTULOS DE PANTALLAS DE DEVISE (login, sign up, etc.)
+   ========================================================================== */
+h1 + h2,
+body > h2:first-of-type {
+  margin-bottom: 1.25rem;
+}
+
+em {
+  color: var(--text-dim);
+  font-style: normal;
+  font-size: 0.8rem;
 }

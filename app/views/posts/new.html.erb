@@ -2,4 +2,4 @@
     <h1><%= current_user.username %>'s New Post:</h1>
 </div>
 <%= render "post_form" %>
-<%= button_to "Cancel", root_path , method: :get %>
+<%= link_to "Cancel", root_path , method: :get %>
